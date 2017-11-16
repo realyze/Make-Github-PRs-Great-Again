@@ -1,18 +1,35 @@
 <!doctype html>
+<!-- Compiled and minified CSS -->
+<!--link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-alpha.1/css/materialize.min.css"-->
+<!-- Compiled and minified JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-alpha.1/js/materialize.min.js"></script>
 <style type="text/css">
 	#mainPopup {
 		padding: 1rem;
 		height: 10rem;
 		width: 25rem;
 		font-family: Helvetica, Ubuntu, Arial, sans-serif;
+		font-size: 1rem;
 	}
 	h1 {
 		font-size: 1.5em;
 		margin-bottom: 1.5rem;
+		text-transform: uppercase;
+		font-weight: 400;
+	}
+	section {
+		margin-bottom: 1rem;
 	}
 	#expand-thangs-btn {
-		padding: 0.5rem;
-		font-size: 1.1rem;
+		display: inline-flex;
+		align-items: center;
+		font-size: 1rem;
+		padding: 0.25rem 0.5rem;
+		margin-left: 0.5rem;
+	}
+	#expand-thangs-btn img {
+		margin-left: 0.25rem;
+		width: 1.75rem;
 	}
 	.unicorn {
 		width: 5rem;
@@ -23,14 +40,26 @@
 	#issues-container {
 		border: 1px black solid;
 		min-height: 2rem;
-		padding: 0.25rem 0;
+		padding: 0.5rem 0;
+		margin: 0.5rem 0rem;
+		max-height: 20rem;
+		overflow-y: auto;
+		overflow-x: hidden;
+	}
+	.loading {
+		font-style: italic;
+		color: rgb(138, 135, 135);
+	}
+	.issues-container-inner {
+		padding: 0 0.5rem;
 	}
 	a.issue {
 		display: block;
-		border-bottom: 1px black solid;
 		cursor: pointer;
-		padding: 0 0.25rem;
 		color: rgb(108, 108, 108);
+	}
+	a.issue:not(:last-of-type) {
+		border-bottom: 1px black solid;
 	}
 	a.issue p {
 		margin: 0.25rem 0;
@@ -43,11 +72,20 @@
 <script src="script.js" type="text/javascript"></script>
 
 <div id="mainPopup">
-	<h1>Make GitHub PRs great again</h1>
+	<h1>Make PRs great again</h1>
 	<img class="unicorn" src="img/unicorn_rainbow.jpg"/>
-	<button id="expand-thangs-btn">Expand all the thangs!</button>
-	<!--button id="list-pending-issues-btn">Gimme pending!</button-->
+	<section>
+		<label>Expand all the comments:</label>
+		<button id="expand-thangs-btn">
+			<span>Do it now</span>
+			<img src="img/all_the_things.png"/>
+		</button>
+	</section>
 
-	<h3>Pending issues (click to scroll to)</h3>
-	<div id="issues-container"></div>
+	<section>
+		<label>Pending issues (click to scroll to)</label>
+		<div id="issues-container">
+			<div class="issues-container-inner loading">Straightening elliptic curves for encyption...</div>
+		</div>
+	</section>
 </div>

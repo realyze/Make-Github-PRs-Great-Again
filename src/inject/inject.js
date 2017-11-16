@@ -1,15 +1,21 @@
+const commentContainerSelector = '.js-comment-container';
+
+
 function expandAllTheThangs() {
-  $('.js-comment-container.outdated-comment')
-    .addClass('open')
-    .addClass('Details--on');
+  $(`${commentContainerSelector}.outdated-comment`)
+      .addClass('open')
+      .addClass('Details--on');
 }
 
 function getPendingIssues() {
   const pendingIssues = [];
-  $('.js-comment-container').each(function mapIssues() {
-    if ($(this).find('.review-comment').length === 1) {
-      const $comment = $(this).find('.review-comment');
-      const reviewElemId = $comment.attr("id");
+  $(commentContainerSelector).each(function mapIssues() {
+    const $comments = $(this).find('.review-comment');
+    const waitingForMe = $comments.length > 0 && $comments.filter('.current-user').length === 0;
+    const hasSingleComment = $comments.length === 1;
+    if (waitingForMe || hasSingleComment) {
+      const $comment = $(this).find('.review-comment:last');
+      const reviewElemId = $comment.attr('id');
       pendingIssues.push({
         elemId: reviewElemId,
         comment: $comment.find('.comment-body').html(),
@@ -21,9 +27,8 @@ function getPendingIssues() {
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   switch (request.action) {
-
     case 'expandComments': {
-      console.log("Expanding all thangs!");
+      console.log('Expanding all thangs!');
       expandAllTheThangs();
       return sendResponse('ok');
     }
@@ -41,10 +46,10 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       let $comment = $(`[id="${commentId}"]`);
       if ($comment.length > 1) {
         const commentEl = $comment.toArray().find(commentElem =>
-          $(commentElem).closest('.js-comment-container').find('.review-comment').length === 1);
+          $(commentElem).closest(commentContainerSelector).find('.review-comment').length === 1);
         $comment = $(commentEl);
       }
-      const $parent = $comment.closest('.js-comment-container.outdated-comment');
+      const $parent = $comment.closest(`${commentContainerSelector}.outdated-comment`);
       if ($parent.length > 0) {
         $parent.addClass('open').addClass('Details--on');
       }
